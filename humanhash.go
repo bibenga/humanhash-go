@@ -292,24 +292,14 @@ func (h *HumanHasher) compress(data []byte) ([]byte, error) {
 	if h.Words > length {
 		return nil, errors.New("fewer input bytes than requested output")
 	}
-
 	seg_size := length / h.Words
-	var checksums []byte = make([]byte, h.Words)
-	for i := 0; i < h.Words; i++ {
-		b := i * seg_size
-		e := (i + 1) * seg_size
-		if e > length {
-			e = length
+	checksums := make([]byte, h.Words)
+	for i, d := range data {
+		i = i / seg_size
+		if i >= h.Words {
+			i = h.Words - 1
 		}
-		if i == h.Words-1 {
-			e = length
-		}
-		segment := data[b:e]
-		c := byte(0)
-		for _, d := range segment {
-			c = c ^ d
-		}
-		checksums[i] = c
+		checksums[i] ^= d
 	}
 	return checksums, nil
 }
