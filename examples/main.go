@@ -1,9 +1,3 @@
-# Human hash
-
-Original code was given from the repository - https://github.com/django-q2/django-q2/blob/master/django_q/humanhash.py
-
-## Usage
-```go
 package main
 
 import (
@@ -25,4 +19,3 @@ func main() {
 	}
 	fmt.Printf("NewUuid: uuid=%v; compressed=%s\n", uuid, compressed)
 }
-```

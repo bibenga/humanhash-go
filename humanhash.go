@@ -1,4 +1,3 @@
-// original code is https://github.com/django-q2/django-q2/blob/master/django_q/humanhash.py
 package humanhashgo
 
 import (
@@ -8,6 +7,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// Default word list from https://github.com/django-q2/django-q2/blob/master/django_q/humanhash.py
 var DefaultWordlist = []string{
 	"ack",
 	"alabama",
@@ -286,6 +286,7 @@ func (h *HumanHasher) Humanize(data []byte) (string, error) {
 	return strings.Join(words, h.Separator), nil
 }
 
+// Compress a list of byte values to a fixed HumanHasher.Words length.
 func (h *HumanHasher) compress(data []byte) ([]byte, error) {
 	length := len(data)
 	if h.Words > length {
@@ -313,6 +314,7 @@ func (h *HumanHasher) compress(data []byte) ([]byte, error) {
 	return checksums, nil
 }
 
+// Generate a human-readable representation of UUID.
 func (h *HumanHasher) Uuid(value uuid.UUID) (string, error) {
 	humanized, err := h.Humanize(value[:])
 	if err != nil {
@@ -321,6 +323,7 @@ func (h *HumanHasher) Uuid(value uuid.UUID) (string, error) {
 	return humanized, err
 }
 
+// Generate a UUID with a human-readable representation.
 func (h *HumanHasher) NewUuid() (uuid.UUID, string, error) {
 	value, err := uuid.NewRandom()
 	if err != nil {
@@ -333,6 +336,7 @@ func (h *HumanHasher) NewUuid() (uuid.UUID, string, error) {
 	return value, humanized, err
 }
 
+// Default hasher
 var DefaultHasher = HumanHasher{
 	Wordlist:  DefaultWordlist,
 	Words:     4,
