@@ -22,6 +22,7 @@ func TestCompress(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(compressed, []byte{96 ^ 173 ^ 141, 13 ^ 135 ^ 27, 96 ^ 149 ^ 128, 130 ^ 151 ^ 32})
 }
+
 func TestHumanize(t *testing.T) {
 	assert := require.New(t)
 
@@ -49,10 +50,10 @@ func TestNewUuid(t *testing.T) {
 	}
 	humanizedManual := strings.Join(
 		[]string{
-			DefaultWordlist[compressed[0]],
-			DefaultWordlist[compressed[1]],
-			DefaultWordlist[compressed[2]],
-			DefaultWordlist[compressed[3]],
+			DefaultWordList[compressed[0]],
+			DefaultWordList[compressed[1]],
+			DefaultWordList[compressed[2]],
+			DefaultWordList[compressed[3]],
 		},
 		"-",
 	)
