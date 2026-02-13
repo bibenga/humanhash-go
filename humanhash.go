@@ -59,7 +59,19 @@ func (h *HumanHasher) Uuid(value uuid.UUID) (string, error) {
 
 // Generate a UUID with a human-readable representation.
 func (h *HumanHasher) NewUuid() (uuid.UUID, string, error) {
-	value, err := uuid.NewRandom()
+	return h.newUuid(uuid.NewRandom)
+}
+
+func (h *HumanHasher) NewUuid6() (uuid.UUID, string, error) {
+	return h.newUuid(uuid.NewV6)
+}
+
+func (h *HumanHasher) NewUuid7() (uuid.UUID, string, error) {
+	return h.newUuid(uuid.NewV7)
+}
+
+func (h *HumanHasher) newUuid(uuidGen func() (uuid.UUID, error)) (uuid.UUID, string, error) {
+	value, err := uuidGen()
 	if err != nil {
 		return value, "", err
 	}
