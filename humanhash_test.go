@@ -1,46 +1,66 @@
 package humanhashgo
 
 import (
+	"slices"
 	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestCompress(t *testing.T) {
-	assert := require.New(t)
-
 	compressed, err := DefaultHasher.compress([]byte{1, 2, 3, 4})
-	assert.NoError(err)
-	assert.Equal(compressed, []byte{1, 2, 3, 4})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	expected := []byte{1, 2, 3, 4}
+	if !slices.Equal(compressed, []byte{1, 2, 3, 4}) {
+		t.Fatalf("expected %v, got %v", expected, compressed)
+	}
 
 	compressed, err = DefaultHasher.compress([]byte{1, 2, 3, 4, 5})
-	assert.NoError(err)
-	assert.Equal(compressed, []byte{1, 2, 3, 4 ^ 5})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	expected = []byte{1, 2, 3, 4 ^ 5}
+	if !slices.Equal(compressed, expected) {
+		t.Fatalf("expected %v, got %v", expected, compressed)
+	}
 
 	compressed, err = DefaultHasher.compress([]byte{96, 173, 141, 13, 135, 27, 96, 149, 128, 130, 151, 32})
-	assert.NoError(err)
-	assert.Equal(compressed, []byte{96 ^ 173 ^ 141, 13 ^ 135 ^ 27, 96 ^ 149 ^ 128, 130 ^ 151 ^ 32})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	expected = []byte{96 ^ 173 ^ 141, 13 ^ 135 ^ 27, 96 ^ 149 ^ 128, 130 ^ 151 ^ 32}
+	if !slices.Equal(compressed, expected) {
+		t.Fatalf("expected %v, got %v", expected, compressed)
+	}
 }
 
 func TestHumanize(t *testing.T) {
-	assert := require.New(t)
-
 	data := []byte{1, 2, 3, 4, 5}
 	value, err := Humanize(data)
-	assert.NoError(err)
-	assert.Equal(value, "alabama-alanine-alaska-alabama")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	expected := "alabama-alanine-alaska-alabama"
+	if value != expected {
+		t.Fatalf("expected %q, got %q", expected, value)
+	}
 
 	value, err = Humanize([]byte{96, 173, 141, 13, 135, 27, 96, 149, 128, 130, 151, 32})
-	assert.NoError(err)
-	assert.Equal(value, "equal-monkey-lake-double")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	expected = "equal-monkey-lake-double"
+	if value != expected {
+		t.Fatalf("expected %q, got %q", expected, value)
+	}
 }
 
 func TestNewUuid(t *testing.T) {
-	assert := require.New(t)
-
 	value, humanized, err := NewUuid()
-	assert.NoError(err)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	compressed := [4]byte{
 		value[0] ^ value[1] ^ value[2] ^ value[3],
@@ -48,6 +68,7 @@ func TestNewUuid(t *testing.T) {
 		value[8] ^ value[9] ^ value[10] ^ value[11],
 		value[12] ^ value[13] ^ value[14] ^ value[15],
 	}
+
 	humanizedManual := strings.Join(
 		[]string{
 			DefaultWordList[compressed[0]],
@@ -58,5 +79,7 @@ func TestNewUuid(t *testing.T) {
 		"-",
 	)
 
-	assert.Equal(humanized, humanizedManual)
+	if humanized != humanizedManual {
+		t.Fatalf("expected %q, got %q", humanizedManual, humanized)
+	}
 }
