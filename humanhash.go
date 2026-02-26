@@ -62,6 +62,10 @@ func (h *HumanHasher) NewUuid() (uuid.UUID, string, error) {
 	return h.newUuid(uuid.NewRandom)
 }
 
+func (h *HumanHasher) NewUuid4() (uuid.UUID, string, error) {
+	return h.NewUuid()
+}
+
 func (h *HumanHasher) NewUuid6() (uuid.UUID, string, error) {
 	return h.newUuid(uuid.NewV6)
 }
@@ -91,3 +95,6 @@ var DefaultHasher = HumanHasher{
 
 var Humanize = DefaultHasher.Humanize
 var NewUuid = DefaultHasher.NewUuid
+var NewUuid4 = DefaultHasher.NewUuid4
+var NewUuid6 = DefaultHasher.NewUuid6
+var NewUuid7 = DefaultHasher.NewUuid7
