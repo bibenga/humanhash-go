@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"uuid"
 
 	humanhash "github.com/bibenga/humanhash-go"
-	"github.com/google/uuid"
 )
 
 var (
@@ -61,8 +61,7 @@ func usage() {
 
 	fmt.Println()
 	fmt.Println(`Example commands:
-
-	$ humanize -value=938AEF34-912E-4729-8C30-7DC347504688
-	$ humanize -value=123456 -format=text
+$ humanize -value=938AEF34-912E-4729-8C30-7DC347504688
+$ humanize -value=123456 -format=text
 	`)
 }

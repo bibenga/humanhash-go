@@ -3,8 +3,7 @@ package humanhashgo
 import (
 	"errors"
 	"strings"
-
-	"github.com/google/uuid"
+	"uuid"
 )
 
 type HumanHasher struct {
@@ -59,26 +58,18 @@ func (h *HumanHasher) Uuid(value uuid.UUID) (string, error) {
 
 // Generate a UUID with a human-readable representation.
 func (h *HumanHasher) NewUuid() (uuid.UUID, string, error) {
-	return h.newUuid(uuid.NewRandom)
+	return h.newUuid(uuid.New())
 }
 
 func (h *HumanHasher) NewUuid4() (uuid.UUID, string, error) {
 	return h.NewUuid()
 }
 
-func (h *HumanHasher) NewUuid6() (uuid.UUID, string, error) {
-	return h.newUuid(uuid.NewV6)
-}
-
 func (h *HumanHasher) NewUuid7() (uuid.UUID, string, error) {
-	return h.newUuid(uuid.NewV7)
+	return h.newUuid(uuid.NewV7())
 }
 
-func (h *HumanHasher) newUuid(uuidGen func() (uuid.UUID, error)) (uuid.UUID, string, error) {
-	value, err := uuidGen()
-	if err != nil {
-		return value, "", err
-	}
+func (h *HumanHasher) newUuid(value uuid.UUID) (uuid.UUID, string, error) {
 	humanized, err := h.Humanize(value[:])
 	if err != nil {
 		return value, "", err
@@ -96,5 +87,4 @@ var DefaultHasher = HumanHasher{
 var Humanize = DefaultHasher.Humanize
 var NewUuid = DefaultHasher.NewUuid
 var NewUuid4 = DefaultHasher.NewUuid4
-var NewUuid6 = DefaultHasher.NewUuid6
 var NewUuid7 = DefaultHasher.NewUuid7
